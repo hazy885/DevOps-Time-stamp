@@ -1,0 +1,21 @@
+name: Complete DevOps Projects Pipeline 
+
+on:
+  push:
+    branches:
+      - main
+  
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set Short SHA
+        run: |
+          echo "SHORT_SHA=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
+        
+      - name: Build Docker Image
+        run: |
+          docker build -t thedevopsdue/complete-devops-project:${{ env.SHORT_SHA }} .
+    
